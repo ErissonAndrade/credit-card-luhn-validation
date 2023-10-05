@@ -21,7 +21,7 @@ async function main() {
     try {
         // connect to DB
 
-        app.listen(port, () => {
+        return app.listen(port, () => {
             console.log(`App listening on port ${port}`);
         });
     } catch(err) {
