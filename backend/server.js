@@ -19,7 +19,7 @@ const port = 5000;
 
 async function main() {
     try {
-        // connect to DB
+        // await DB connection
 
         return app.listen(port, () => {
             console.log(`App listening on port ${port}`);
