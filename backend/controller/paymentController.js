@@ -2,22 +2,35 @@ const { body, validationResult } = require('express-validator');
 
 const validators = () => {
     return [
-        body('creditCardNumber')
+        body('cardHolderName')
+            .isEmpty()
+            .withMessage('You must provide a name.'),
+        body('cardNumber')
+            .isEmpty()
+            .withMessage('You must provide a card number')
             .isNumeric(true)
-            .withMessage('Your credit card should have only numbers')
+            .withMessage('Your credit card should have only numbers.')
             .trim()
-            .escape()
+            .escape(),
+        body('cardExpirationDate')
+            .isEmpty()
+            .withMessage('You must provide a date.'),
+        body('cardCvv')
+            .isEmpty()
+            .withMessage('You must provide a cvv.')
+            .isLength(3)
+            .withMessage('CVV must be 3 characters')
     ]
 }
 
-const isValidCreditCard = (creditCardNumber) => {
-    const creditCardNumbers = creditCardNumber.split('');
+const isValidCreditCard = (cardNumber) => {
+    const creditCardNumbers = cardNumber.split('');
 
     let sum = 0;
     let doubleNumber = false;
 
     for(let i = creditCardNumbers.length - 1; i >= 0; i--) {
-        let digit = parseInt(creditCardNumber.charAt(i), 10);
+        let digit = parseInt(cardNumber.charAt(i), 10);
 
         if(doubleNumber) {
             digit *= 2;
@@ -42,7 +55,7 @@ const payment_post = [
     validators(),
 
     (req, res, next) => {
-        const { creditCardNumber } = req.body;
+        const { cardNumber } = req.body;
 
         const errors = validationResult(req);
 
@@ -50,7 +63,7 @@ const payment_post = [
             return res.status(400).json({ errors: errors.array() })
         }   
 
-        else if(!isValidCreditCard(creditCardNumber)) {
+        else if(!isValidCreditCard(cardNumber)) {
             return res.status(400).json({message: 'Invalid credit card number.'})
         }
 

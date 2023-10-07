@@ -26,7 +26,7 @@ describe('POST /payment', () => {
     it("Should send status 400 and error if credit card number contain letters", (done) => {
         request(app)
             .post('/payment')
-            .send({creditCardNumber: 'a123'})
+            .send({cardNumber: 'a123'})
             .expect(400)
             .expect(response => {
                 expect(response.body.errors).toBeInstanceOf(Array);
@@ -45,7 +45,7 @@ describe('POST /payment', () => {
     it("Should check if a credit card number is invalid", (done) => {
         request(app)
             .post('/payment')
-            .send({creditCardNumber: '378282246310025'})
+            .send({cardNumber: '378282246310025'})
             .expect(400)
             .expect(response => {
                 expect(response.body.message).toBe('Invalid credit card number.')
@@ -60,7 +60,7 @@ describe('POST /payment', () => {
         it("Should check if a credit card number is valid", (done) => {
             request(app)
                 .post('/payment')
-                .send({creditCardNumber: creditCard.number})
+                .send({cardNumber: creditCard.number})
                 .expect(200)
                 .expect(response => {
                     expect(response.body.message).toBe('Payment succesfull!')

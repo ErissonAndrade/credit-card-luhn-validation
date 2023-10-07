@@ -2,6 +2,7 @@ import './App.css';
 import Card from './components/Card';
 import CardForm from './components/CardForm';
 import { useState } from 'react';
+import axios from 'axios';
 
 function App() {
   const [name, setName] = useState('John doe');
@@ -26,6 +27,30 @@ function App() {
     }
   }
 
+  const postCreditCard = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const cardHolderName = formData.get('card-holder-name');
+    const cardNumber = formData.get('card-number');
+    const cardExpirationDate = formData.get('card-expiration-date');
+    const cardCvv = formData.get('card-cvv');
+
+    axios
+      .post('http://localhost:5000/payment', {
+        cardHolderName,
+        cardNumber,
+        cardExpirationDate,
+        cardCvv
+      })
+      .then(response => {
+        const data = response.data;
+        console.log(data);
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  };
+
   return (
   <main>
     <div className="color-bg">
@@ -40,7 +65,7 @@ function App() {
       </div>
     </div>
     <div className="no-color-bg">
-      <CardForm onInputChange={handleInputChange}/>
+      <CardForm onInputChange={handleInputChange} onSubmit={(e) => postCreditCard(e)}/>
     </div>
   </main>
   );
