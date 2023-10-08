@@ -1,7 +1,7 @@
 import './Card.css'
 
 function Card(props) {
-    const { name, number, expirationDate, cvv } = props;
+    const { name, number, expirationMonth, expirationYear, cvv } = props;
 
     return (
         <div className="cards">
@@ -9,7 +9,9 @@ function Card(props) {
                 <div>{number}</div>
                 <div className="name-date-container">
                     <div>{name}</div>
-                    <div>{expirationDate}</div>
+                    <div className="expiration-date">
+                        <div>{expirationMonth}/{expirationYear}</div>
+                    </div>
                 </div>
             </div>
             <div className="card-back">

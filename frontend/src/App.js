@@ -3,27 +3,48 @@ import Card from './components/Card';
 import CardForm from './components/CardForm';
 import { useState } from 'react';
 import axios from 'axios';
+import uniqid from 'uniqid';
 
 function App() {
-  const [name, setName] = useState('John doe');
+  const [name, setName] = useState('YOUR NAME HERE');
   const [number, setNumber] = useState('0000 0000 0000 0000');
-  const [expirationDate, setExpirationDate] = useState('12/25');
-  const [cvv, setcvv] = useState('000');
+  const [expirationMonth, setExpirationMonth] = useState('12');
+  const [expirationYear, setExpirationYear] = useState('25');
+  const [cvv, setcvv] = useState('123');
+  const [formMessages, setFormMessages] = useState([]);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     const inputsMapping = [
-      {inputName: 'card-holder-name', updateState: setName},
-      {inputName: 'card-number', updateState: setNumber},
-      {inputName: 'card-expiration-date', updateState: setExpirationDate},
-      {inputName: 'card-cvv', updateState: setcvv}
+      { inputName: 'card-holder-name', updateState: setName },
+      { inputName: 'card-number', updateState: setNumber },
+      { inputName: 'card-expiration-month', updateState: setExpirationMonth },
+      { inputName: 'card-expiration-year', updateState: setExpirationYear },
+      { inputName: 'card-cvv', updateState: setcvv }
     ]
 
     const matchedInput = inputsMapping.find(input => input.inputName === name);
 
+    let updatedValue = value;
     if (matchedInput) {
-      matchedInput.updateState(value);
+
+      if (name === 'card-number') {
+        updatedValue = value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
+      } else if (name === 'card-holder-name') {
+        updatedValue = value.toUpperCase();
+      }
+
+      matchedInput.updateState(updatedValue);
+    }
+
+    if (updatedValue.trim() === '') {
+      setName('YOUR NAME HERE');
+      setNumber('0000 0000 0000 0000');
+      setExpirationMonth('12');
+      setExpirationYear('25');
+      setcvv('123');
     }
   }
 
@@ -32,42 +53,61 @@ function App() {
     const formData = new FormData(e.target);
     const cardHolderName = formData.get('card-holder-name');
     const cardNumber = formData.get('card-number');
-    const cardExpirationDate = formData.get('card-expiration-date');
+    const cardExpirationMonth = formData.get('card-expiration-month');
+    const cardExpirationYear = formData.get('card-expiration-year');
     const cardCvv = formData.get('card-cvv');
 
     axios
       .post('http://localhost:5000/payment', {
         cardHolderName,
         cardNumber,
-        cardExpirationDate,
+        cardExpirationMonth,
+        cardExpirationYear,
         cardCvv
       })
       .then(response => {
         const data = response.data;
-        console.log(data);
+        if(data) {
+          setPaymentSuccess(true)
+        }
       })
       .catch(err => {
-        console.error(err)
+        setFormMessages(err.response.data.errors)
+        console.log(err.response.data.errors)
       })
   };
 
   return (
-  <main>
-    <div className="color-bg">
-      <div className="card-container">
-        <Card 
-          className="card-front" 
-          name={name}
-          number={number}
-          expirationDate={expirationDate} 
-          cvv={cvv}
-        />
+    <main>
+      <div className="color-bg">
+        <div className="card-container">
+          <Card
+            className="card-front"
+            name={name}
+            number={number}
+            expirationMonth={expirationMonth}
+            expirationYear={expirationYear}
+            cvv={cvv}
+          />
+        </div>
       </div>
-    </div>
-    <div className="no-color-bg">
-      <CardForm onInputChange={handleInputChange} onSubmit={(e) => postCreditCard(e)}/>
-    </div>
-  </main>
+      <div className="no-color-bg">
+        {paymentSuccess ? (
+            <div className="success-message">
+              Payment successful! Thank you for your purchase.
+            </div>
+        ) : (
+          <div className="form-container">
+            <CardForm onInputChange={handleInputChange} onSubmit={(e) => postCreditCard(e)} />
+            <div className="form-messages">
+              {formMessages && formMessages.map(formMessage => ( // Ensure that form messages are only shown if they exist
+                <div key={uniqid()}>{formMessage.msg}</div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
 

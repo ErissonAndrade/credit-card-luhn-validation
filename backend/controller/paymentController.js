@@ -3,23 +3,24 @@ const { body, validationResult } = require('express-validator');
 const validators = () => {
     return [
         body('cardHolderName')
-            .isEmpty()
-            .withMessage('You must provide a name.'),
-        body('cardNumber')
-            .isEmpty()
-            .withMessage('You must provide a card number')
-            .isNumeric(true)
-            .withMessage('Your credit card should have only numbers.')
             .trim()
             .escape(),
-        body('cardExpirationDate')
-            .isEmpty()
-            .withMessage('You must provide a date.'),
+        body('cardNumber')
+            .custom(value => {
+                return isValidCreditCard(value)
+            })
+            .withMessage('Invalid credit card number!')
+            .trim()
+            .escape(),
+        body('cardExpirationMonth')
+            .trim()
+            .escape(),
+        body('cardExpirationYear')
+            .trim()
+            .escape(),
         body('cardCvv')
-            .isEmpty()
-            .withMessage('You must provide a cvv.')
-            .isLength(3)
-            .withMessage('CVV must be 3 characters')
+            .trim()
+            .escape()
     ]
 }
 

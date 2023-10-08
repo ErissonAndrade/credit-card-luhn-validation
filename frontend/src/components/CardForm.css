@@ -1,8 +1,10 @@
 form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 1rem; 
-    padding-top: 1rem;
+    padding: 1rem 0rem;
+    width: 400px;
 }
 
 label {
@@ -13,7 +15,21 @@ label {
 
 .expiration-cvv-container {
     display: flex;
+    justify-content: space-between;
     gap: 2rem;
+}
+
+.expiration-date-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.expiration-cvv-container {
+    text-align: center;
+}
+
+.expiration-cvv-container input {
+    width: 50px;
 }
 
 .btn-container {

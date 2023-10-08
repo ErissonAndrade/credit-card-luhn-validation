@@ -6,9 +6,10 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "devstart-backend": "nodemon backend/server.js",
-    "start-backend": "node backend/server.js",
-    "start-frontend": "cd frontend && npm start",
-    "dev": "concurrently \"npm run start-backend\" \"npm run start-frontend\""
+    "devstart-frontend": "cd frontend && npm start",
+    "devstart-app": "concurrently \"npm run devstart-backend\" \"npm run devstart-frontend\"",
+    "build": "concurrently \"npm install\" \"cd frontend && npm install\"",
+    "start-app": "concurrently \"node backend/server.js\" \"cd frontend && npm start\""
   },
   "keywords": [],
   "author": "",
