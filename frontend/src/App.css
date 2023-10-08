@@ -18,12 +18,12 @@ main {
 }
 
 .no-color-bg {
-   flex: 1;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
-   padding: 0 3rem;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 3rem;
 }
 
 .form-messages {
@@ -32,7 +32,7 @@ main {
   text-align: center;
 }
 
-.form-container { 
+.form-container {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -45,8 +45,4 @@ main {
   align-items: center;
   justify-content: center;
   flex: 1;
-};
-
-
-
-
+}

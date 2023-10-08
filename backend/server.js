@@ -24,7 +24,7 @@ async function main() {
         return app.listen(port, () => {
             console.log(`App listening on port ${port}`);
         });
-    } catch(err) {
+    } catch (err) {
         console.error(err);
     }
 }

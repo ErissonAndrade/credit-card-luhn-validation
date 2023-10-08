@@ -28,23 +28,23 @@ function App() {
     const matchedInput = inputsMapping.find(input => input.inputName === name);
 
     let updatedValue = value;
-    if (matchedInput) {
 
+    if (matchedInput) {
       if (name === 'card-number') {
         updatedValue = value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
       } else if (name === 'card-holder-name') {
         updatedValue = value.toUpperCase();
       }
 
-      matchedInput.updateState(updatedValue);
-    }
+      // Prevent users from entering non-numeric values
+      const numberRegex = /^[0-9]*$/;
 
-    if (updatedValue.trim() === '') {
-      setName('YOUR NAME HERE');
-      setNumber('0000 0000 0000 0000');
-      setExpirationMonth('12');
-      setExpirationYear('25');
-      setcvv('123');
+      if (name !== 'card-holder-name' && !numberRegex.test(value)) {
+        updatedValue = value.replace(/\D/g, '');
+        e.target.value = updatedValue;
+      }
+
+      matchedInput.updateState(updatedValue);
     }
   }
 
@@ -67,13 +67,12 @@ function App() {
       })
       .then(response => {
         const data = response.data;
-        if(data) {
+        if (data) {
           setPaymentSuccess(true)
         }
       })
       .catch(err => {
         setFormMessages(err.response.data.errors)
-        console.log(err.response.data.errors)
       })
   };
 
@@ -93,16 +92,16 @@ function App() {
       </div>
       <div className="no-color-bg">
         {paymentSuccess ? (
-            <div className="success-message">
-              Payment successful! Thank you for your purchase.
-            </div>
+          <div className="success-message">
+            Payment successful! Thank you for your purchase.
+          </div>
         ) : (
           <div className="form-container">
             <CardForm onInputChange={handleInputChange} onSubmit={(e) => postCreditCard(e)} />
             <div className="form-messages">
-              {formMessages && formMessages.map(formMessage => ( // Ensure that form messages are only shown if they exist
+              {formMessages.map(formMessage => // Ensure that form messages are only shown if they exist
                 <div key={uniqid()}>{formMessage.msg}</div>
-              ))}
+              )}
             </div>
           </div>
         )}

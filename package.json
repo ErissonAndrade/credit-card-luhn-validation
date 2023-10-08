@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test-frontend": "cd frontend && npm test",
+    "test-backend": "jest backend",
+    "test": "concurrently \"npm run test-backend\" \"npm run test-frontend\"",
     "devstart-backend": "nodemon backend/server.js",
     "devstart-frontend": "cd frontend && npm start",
     "devstart-app": "concurrently \"npm run devstart-backend\" \"npm run devstart-frontend\"",

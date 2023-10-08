@@ -8,7 +8,7 @@ function Card(props) {
             <div className="card-front">
                 <div>{number}</div>
                 <div className="name-date-container">
-                    <div>{name}</div>
+                    <div className="card-name">{name}</div>
                     <div className="expiration-date">
                         <div>{expirationMonth}/{expirationYear}</div>
                     </div>

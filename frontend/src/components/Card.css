@@ -6,7 +6,7 @@
 .cards {
     color: white;
     font-size: 1.2rem;
-    padding: 0 1rem;  
+    padding: 0 1rem;
     font-weight: 600;
 }
 
@@ -23,6 +23,7 @@
     justify-content: flex-end;
     color: var(--font-color);
     padding: 1rem;
+    flex-wrap: wrap;
 }
 
 .name-date-container {
@@ -31,6 +32,15 @@
     padding: 0 2rem;
     margin-bottom: 1rem;
     margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+
+.card-name {
+    flex: 1;
+    text-align: start;
+    flex-wrap: wrap;
+    display: flex;
 }
 
 .card-back {
