@@ -10,7 +10,7 @@
     "devstart-backend": "nodemon backend/server.js",
     "devstart-frontend": "cd frontend && npm start",
     "devstart-app": "concurrently \"npm run devstart-backend\" \"npm run devstart-frontend\"",
-    "build": "concurrently \"npm install\" \"cd frontend && npm install\"",
+    "build": "npm install && cd frontend && npm install",
     "start-app": "concurrently \"node backend/server.js\" \"cd frontend && npm start\""
   },
   "keywords": [],
